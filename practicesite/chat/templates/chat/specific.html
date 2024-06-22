@@ -1,0 +1,50 @@
+{% extends "chat/base.html" %}
+{% block content %}
+
+<div class="content-section">
+
+    <div class="mb-4" id="display">
+
+    </div>
+    {% if user.is_authenticated %}
+    <form id="post-form" action="send">
+        {% csrf_token %}
+
+        <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}"/>
+        <input type="hidden" name="chat_id" id="chat_id" value="{{ chat.id }}"/>
+        <input type="text" name="message" id="message">
+        <input type="submit" value="Отправить">
+    </form>
+    {% endif %}
+</div>
+
+<script>
+$(document).ready(function(){
+
+setInterval(function(){
+    $.ajax({
+        type: 'GET',
+        url : "/chat/getmessages/{{ chat.id }}",
+        success: function(response){
+            console.log(response);
+            $("#display").empty();
+            for (var key in response.messages)
+            {
+                for (var user in response.authors)
+                {
+                    if (response.authors[user].id == response.messages[key].author_id) {
+                        var temp="<div class='content-section'><b>От: "+response.authors[user].username+"</b><p>"+response.messages[key].text+"</p><span class='message-right'>Отправлено в: "+response.messages[key].pub_time+"</span></div>";
+                        $("#display").append(temp);
+                    }
+                }
+            }
+        },
+        error: function(response){
+        //    alert('An error occured')
+        }
+    });
+},1000);
+})
+</script>
+
+{% endblock content %}

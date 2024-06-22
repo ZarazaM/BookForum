@@ -1,0 +1,17 @@
+{% extends "chat/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+
+
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="mb-4">Удалить объявление?</legend>'
+            <h2>Вы уверены что хотите удалить объявление "{{ object.title }}" (это действие необратимо!)</h2>
+        </fieldset>
+        <button class="btn btn-outline-danger" type="submit">Да, удалить</button>
+        <a class="btn btn-outline-secondary" href="{% url 'ad-detail' object.id %}">Отмена</a>
+    </form>
+    </div>
+{% endblock content %}

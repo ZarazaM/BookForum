@@ -1,0 +1,14 @@
+{% extends "chat/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Редактирование объявления</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <button class="btn btn-outline-info" type="submit">Сохранить</button>
+    </form>
+    </div>
+{% endblock content %}

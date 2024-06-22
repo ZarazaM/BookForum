@@ -1,0 +1,26 @@
+{% extends "chat/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    {% if ads %}
+    {% for ad in ads %}
+    <article class="media content-section">
+        <img class="article-img rounded-circle" src="{{ ad.author.profile.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ ad.author }}</a>
+                <small class="text-muted">{{ ad.pub_date|date:"F d, Y" }}</small>
+            </div>
+
+            <h2><a class="article-title" href="{% url 'ad-detail' ad.id %}">{{ ad.title }}</a></h2>
+            <p class="article-content">{{ ad.content }}</p>
+
+        </div>
+    </article>
+    {% endfor %}
+
+    {% else %}
+        <p>В данный момент нет объявлений.</p>
+    {% endif %}
+</div>
+{% endblock content %}

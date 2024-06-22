@@ -1,0 +1,39 @@
+{% extends "chat/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    {% if chat_list %}
+        <h3>Доступные чаты</h3>
+        <div>
+        <ul class="list-group">
+            {% for chat in chat_list %}
+                <li class="list-group-item list-group-item-light">
+                    <div class="">
+                    <a class="" href="{% url 'specific' chat.id %}">{{ chat.name }}</a>
+                    <small class="text-muted">Создатель: {{ chat.creator.username }}</small>
+                    <small class="text-muted">{{ chat.create_time }}</small>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        </div>
+    {% else %}
+        <p>В данный момент нет доступных чатов.</p>
+    {% endif %}
+    <p/>
+    {% if user.is_authenticated %}
+    <div class="content-section">
+    <form method="POST" action="createchat">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="mb-4">Создать новый чат</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Создать</button>
+        </div>
+    </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
